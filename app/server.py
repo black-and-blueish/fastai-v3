@@ -9,7 +9,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyAKMHADSqLYzbrY1Djh4Y3H5thJKTVNUjc'
+export_file_url = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
 export_file_name = 'breeds.pkl'
 
 classes = ['Giant Schnazer','Black Russian Terrier']
