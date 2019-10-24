@@ -9,10 +9,14 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
-export_file_name = 'breeds.pkl'
+export_file_url_breeds = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
+export_file_name_breeds = 'breeds.pkl'
 
-classes = ['Giant Schnazer','Black Russian Terrier']
+export_file_url_other = 'https://www.googleapis.com/drive/v3/files/1jriuptG7twsH8dVay_HlJ31lJxkwbCDR?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
+export_file_name_other = 'other.pkl'
+
+classes_breeds = ['Giant Schnazer','Black Russian Terrier']
+classes_other = ['Other','GS or BRT']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -30,10 +34,12 @@ async def download_file(url, dest):
 
 
 async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
+    await download_file(export_file_url, path / export_file_name_breeds)
+    await download_file(export_file_url, path / export_file_name_other)
     try:
-        learn = load_learner(path, export_file_name)
-        return learn
+        learn_breeds = load_learner(path, export_file_name_breeds)
+        learn_other = load_learner(path, export_file_name_other)
+        return learn_breeds, learn_other
     except RuntimeError as e:
         if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
             print(e)
@@ -45,7 +51,7 @@ async def setup_learner():
 
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
-learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
+learn_breeds, learn_other = loop.run_until_complete(asyncio.gather(*tasks))[0]
 loop.close()
 
 
@@ -60,8 +66,11 @@ async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    if str(learn_other.predict(img)[0]) == 'Other':
+        return JSONResponse({'result': 'Не похоже на чёрного терьера или ризеншнауцера.'})    
+    else:
+        prediction = learn_breeds.predict(img)[0]
+        return JSONResponse({'result': str(prediction)})
 
 
 if __name__ == '__main__':
