@@ -34,8 +34,8 @@ async def download_file(url, dest):
 
 
 async def setup_learner():
-    await download_file(export_file_url, path / export_file_name_breeds)
-    await download_file(export_file_url, path / export_file_name_other)
+    await download_file(export_file_url_breeds, path / export_file_name_breeds)
+    await download_file(export_file_url_other, path / export_file_name_other)
     try:
         learn_breeds = load_learner(path, export_file_name_breeds)
         learn_other = load_learner(path, export_file_name_other)
