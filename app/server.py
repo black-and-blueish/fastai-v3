@@ -12,7 +12,7 @@ from starlette.staticfiles import StaticFiles
 export_file_url_breeds = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
 export_file_name_breeds = 'breeds.pkl'
 
-export_file_url_other = 'https://www.googleapis.com/drive/v3/files/1jriuptG7twsH8dVay_HlJ31lJxkwbCDR?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
+export_file_url_other = 'https://www.googleapis.com/drive/v3/files/1K37qSPwYjrpxeX_mymS7JyE5x26avkS3?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
 export_file_name_other = 'other.pkl'
 
 classes_breeds = ['Giant Schnazer','Black Russian Terrier']
