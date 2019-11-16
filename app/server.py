@@ -9,14 +9,14 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url_breeds = 'https://www.googleapis.com/drive/v3/files/13QpJ7isrNTUL2GWIFU9Sq4ectXQevunx?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
+export_file_url_breeds = 'https://www.googleapis.com/drive/v3/files/1sVUuwqSneB_Lms9sG6rDyHHhyc5NKLIg?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
 export_file_name_breeds = 'breeds.pkl'
 
-export_file_url_other = 'https://www.googleapis.com/drive/v3/files/1K37qSPwYjrpxeX_mymS7JyE5x26avkS3?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
+export_file_url_other = 'https://www.googleapis.com/drive/v3/files/1fouZL_F1eHuO39_SHHWmxGixs3vlQzFu?alt=media&key=AIzaSyDxkCFTSW6M8CIJgOKVy8ANkD2ceHvyo1s'
 export_file_name_other = 'other.pkl'
 
-classes_breeds = ['Giant Schnazer','Black Russian Terrier']
-classes_other = ['Other','GS or BRT']
+#classes_breeds = ['Giant Schnazer','Black Russian Terrier']
+#classes_other = ['Other','GS or BRT']
 path = Path(__file__).parent
 
 app = Starlette()
@@ -67,7 +67,11 @@ async def analyze(request):
     img_bytes = await (img_data['file'].read())
     img = open_image(BytesIO(img_bytes))
     if str(learn_other.predict(img)[0]) == 'Other':
-        return JSONResponse({'result': 'Не похоже на чёрного терьера или ризеншнауцера.'})    
+        return JSONResponse({'result': 'Не похоже на животное.'})    
+    elif str(learn_other.predict(img)[0]) == 'Person':
+        return JSONResponse({'result': 'Это скорее человек!'})   
+    elif str(learn_other.predict(img)[0]) == 'Animal':
+        return JSONResponse({'result': 'Это точно собака?'})   
     else:
         prediction = learn_breeds.predict(img)[0]
         return JSONResponse({'result': str(prediction)})
