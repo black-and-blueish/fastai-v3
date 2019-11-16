@@ -68,7 +68,7 @@ async def analyze(request):
     img = open_image(BytesIO(img_bytes))
     if str(learn_other.predict(img)[0]) == 'Other':
         return JSONResponse({'result': 'Не похоже на животное.'})    
-    elif str(learn_other.predict(img)[0]) == 'Person':
+    elif str(learn_other.predict(img)[0]) == 'People':
         return JSONResponse({'result': 'Это скорее человек!'})   
     elif str(learn_other.predict(img)[0]) == 'Animal':
         return JSONResponse({'result': 'Это точно собака?'})   
